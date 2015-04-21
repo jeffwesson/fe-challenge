@@ -1,0 +1,8 @@
+img.profile-thumbnail {
+  height: 3rem;
+}
+
+.users input[type='text'] {
+  border: none;
+  box-shadow: none;
+}

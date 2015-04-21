@@ -3,27 +3,129 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width">
+  <meta name="fragment" content="!"/>
+  <base href="/"/>
   <title>Newsie</title>
-  <link rel="stylesheet" href="basic.css">
-  <!-- your css
-  <link rel="stylesheet" href="style.css"> -->
+  <!-- Bootstrap styles -->
+  <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <!-- Application styles -->
+  <link rel="stylesheet" href="app.css">
+  <!-- Component styles -->
+  <link rel="stylesheet" href="components/feed/feed.css"/>
+  <!--<link rel="stylesheet" href="components/controls/controls.css"/>-->
 </head>
-<body>
-  <header>
-    <h2 class="logo">Newsie</h2>
-  </header>
-  <main>
-    <section class="controls">
-      <!-- all your controls for filtering and and sorting go here -->
-    </section>
-    <section class="feed">
-      <!-- news feed items go here -->
-    <!--   no matter how you choose to create a feed item (li, directive, component, etc)
-    make sure to place the 'feed-item' class on it -->
-    </section>
-  </main>
-  <script src="gregbot.js"></script>
-  <!-- your js -->
-  <script src="app.js"></script>
+<body ng-app="newsie">
+<header>
+  <h2 class="logo">Newsie</h2>
+</header>
+<main class="container" ng-controller="FeedController as feed">
+
+  <!-- HACK: this needs to be broken out into a partial view to be injected using ui-router -->
+  <section class="controls">
+    <div class="row" ng-model-options="{debounce: 1000}">
+
+      <!-- Users controls -->
+      <div class="col-xs-12 col-md-6">
+        <input type="text" class="input-lg form-control" placeholder="Search users"
+            ng-model="feed.users.currentSearchTerm"/>
+      </div>
+
+      <!-- News items controls -->
+      <div class="col-xs-12 col-md-6">
+        <input type="text" class="input-lg form-control" placeholder="Search news items"
+            ng-model="feed.newsItems.currentSearchTerm"/>
+      </div>
+    </div>
+  </section>
+
+  <!-- HACK: this needs to be broken out into a partial view to be injected using ui-router -->
+  <section class="feed">
+    <div class="row">
+      <div class="col-xs-12 col-md-6">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="First name"
+              ng-model="feed.newUser.firstName">
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Last name"
+              ng-model="feed.newUser.lastName">
+        </div>
+        <div class="form-group">
+          <button class="form-control btn btn-success" ng-click="feed.addUser(feed.newUser)">Add User</button>
+        </div>
+        <div class="users">
+          <div ng-repeat="(index, user) in feed.users | filter:feed.users.currentSearchTerm">
+            <a ng-click="feed.deleteUser(user)" class="pull-right" href>
+              <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+            </a>
+            <div class="row">
+              <div class="col-xs-3 col-md-2 col-lg-1">
+                <img ng-if="user.image" class="profile-thumbnail" ng-src="{{user.image}}" alt="profile image"/>
+                <i ng-if="!user.image" class="fa fa-user fa-3x fa-fw"></i>
+              </div>
+              <div class="col-xs-9 col-md-10 col-lg-11" ng-model-options="{updateOn:'blur'}">
+                <div class="form-group form-inline">
+                  <input type="text" ng-model="user.firstName"/>
+                  <input type="text" ng-model="user.lastName"/>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="News item type"
+              ng-model="feed.newNewsItem.event.eventType">
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="News item snippet"
+              ng-model="feed.newNewsItem.event.snippet">
+        </div>
+        <div class="form-group">
+          <button class="form-control btn btn-success" ng-click="feed.addNewsItem(feed.newNewsItem)">Add News Item
+          </button>
+        </div>
+        <div class="news-items">
+          <div ng-repeat="(index, newsItem) in feed.newsItems | filter:feed.newsItems.currentSearchTerm"
+              class="well feed-item">
+            <a ng-click="feed.deleteNewsItem(newsItem)" class="pull-right" href>
+              <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+            </a>
+          <span class="small">Posted <span ng-bind="newsItem.time | date"></span> at <span
+              ng-bind="newsItem.time | date:'mediumTime'"></span></span>
+
+            <p ng-bind="newsItem.event.eventType"></p>
+
+            <p ng-bind="newsItem.event.snippet"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Client dependencies -->
+<script src="lib/angular/angular.js"></script>
+<script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="lib/firebase/firebase.js"></script>
+<script src="lib/angularfire/dist/angularfire.js"></script>
+<script src="lib/jquery/dist/jquery.js"></script>
+<script src="lib/bootstrap/dist/js/bootstrap.js"></script>
+
+<!-- Gregbot -->
+<script src="gregbot.js"></script>
+
+<!-- Application -->
+<script src="app-compiled.js"></script>
+<script src="services/accounts.service-compiled.js"></script>
+<script src="services/events.service-compiled.js"></script>
+
+<!-- Components -->
+<script src="components/feed/feed.controller-compiled.js"></script>
+<!--<script src="components/controls/controls.controller-compiled.js"></script>-->
 </body>
 </html>
