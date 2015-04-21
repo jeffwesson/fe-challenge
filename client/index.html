@@ -65,10 +65,10 @@
                 <img ng-if="user.image" class="profile-thumbnail" ng-src="{{user.image}}" alt="profile image"/>
                 <i ng-if="!user.image" class="fa fa-user fa-3x fa-fw"></i>
               </div>
-              <div class="col-xs-9 col-md-10 col-lg-11" ng-model-options="{updateOn:'blur'}">
+              <div class="col-xs-9 col-md-10 col-lg-11">
                 <div class="form-group form-inline">
-                  <input type="text" ng-model="user.firstName"/>
-                  <input type="text" ng-model="user.lastName"/>
+                  <input type="text" ng-blur="feed.saveUser(user)" ng-model="user.firstName"/>
+                  <input type="text" ng-blur="feed.saveUser(user)" ng-model="user.lastName"/>
                 </div>
               </div>
             </div>
