@@ -16,110 +16,22 @@
   <link rel="stylesheet" href="components/feed/feed.css"/>
   <!--<link rel="stylesheet" href="components/controls/controls.css"/>-->
 </head>
-<body ng-app="newsie">
+<body ng-app="newsie" ng-controller="AppController as app">
+
 <header>
   <h2 class="logo">Newsie</h2>
 </header>
-<main class="container" ng-controller="FeedController as feed">
 
-  <!-- HACK: this needs to be broken out into a partial view to be injected using ui-router -->
-  <section class="controls">
-    <div class="row" ng-model-options="{debounce: 1000}">
-
-      <!-- Users controls -->
-      <div class="col-xs-12 col-md-6">
-        <input type="text" class="input-lg form-control" placeholder="Search users"
-            ng-model="feed.users.currentSearchTerm"/>
-      </div>
-
-      <!-- News items controls -->
-      <div class="col-xs-12 col-md-6">
-        <input type="text" class="input-lg form-control" placeholder="Search news items"
-            ng-model="feed.newsItems.currentSearchTerm"/>
-      </div>
-    </div>
-  </section>
-
-  <!-- HACK: this needs to be broken out into a partial view to be injected using ui-router -->
-  <section class="feed">
-    <div class="row">
-      <div class="col-xs-12 col-md-6">
-        <form name="newUserForm" novalidate>
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="First name"
-                ng-model="feed.newUser.firstName" name="firstName" required/>
-            <div ng-messages="newUserForm.firstName.$error" role="alert">
-              <div ng-message="required">This field is required.</div>
-            </div>
-          </div>
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="Last name"
-                ng-model="feed.newUser.lastName" name="lastName" required/>
-            <div ng-messages="newUserForm.lastName.$error" role="alert">
-              <div ng-message="required">This field is required.</div>
-            </div>
-          </div>
-          <div class="form-group">
-            <button class="form-control btn btn-success" ng-click="feed.addUser(feed.newUser)">Add User</button>
-          </div>
-        </form>
-        <div class="users">
-          <div ng-repeat="(index, user) in feed.users | filter:feed.users.currentSearchTerm">
-            <a ng-click="feed.deleteUser(user)" class="pull-right" href>
-              <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
-            </a>
-
-            <div class="row">
-              <div class="col-xs-3 col-md-2">
-                <img ng-if="user.image" class="profile-thumbnail" ng-src="{{user.image}}" alt="profile image"/>
-                <i ng-if="!user.image" class="fa fa-user fa-3x fa-fw"></i>
-              </div>
-              <div class="col-xs-9 col-md-10">
-                <div class="form-group form-inline">
-                  <input type="text" ng-blur="feed.saveUser(user)" ng-model="user.firstName"/>
-                  <input type="text" ng-blur="feed.saveUser(user)" ng-model="user.lastName"/>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-12 col-md-6">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="News item type"
-              ng-model="feed.newNewsItem.event.eventType">
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="News item snippet"
-              ng-model="feed.newNewsItem.event.snippet">
-        </div>
-        <div class="form-group">
-          <button class="form-control btn btn-success" ng-click="feed.addNewsItem(feed.newNewsItem)">Add News Item
-          </button>
-        </div>
-        <div class="news-items">
-          <div ng-repeat="(index, newsItem) in feed.newsItems | filter:feed.newsItems.currentSearchTerm"
-              class="well feed-item">
-            <a ng-click="feed.deleteNewsItem(newsItem)" class="pull-right" href>
-              <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
-            </a>
-          <span class="small">Posted <span ng-bind="newsItem.time | date"></span> at <span
-              ng-bind="newsItem.time | date:'mediumTime'"></span></span>
-
-            <p ng-bind="newsItem.event.eventType"></p>
-
-            <p ng-bind="newsItem.event.snippet"></p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+<main class="component container">
+  <section ng-viewport="top"></section>
+  <section ng-viewport="bottom"></section>
 </main>
+
+<footer>&copy; {{app.getFullYear()}} Newsie</footer>
 
 <!-- Client dependencies -->
 <script src="lib/angular/angular.js"></script>
-<script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="lib/angular-new-router/dist/router.es5.js"></script>
 <script src="lib/angular-messages/angular-messages.js"></script>
 <script src="lib/firebase/firebase.js"></script>
 <script src="lib/angularfire/dist/angularfire.js"></script>
@@ -133,9 +45,10 @@
 <script src="app-compiled.js"></script>
 <script src="services/accounts.service-compiled.js"></script>
 <script src="services/events.service-compiled.js"></script>
+<script src="services/app-state.service-compiled.js"></script>
 
 <!-- Components -->
 <script src="components/feed/feed.controller-compiled.js"></script>
-<!--<script src="components/controls/controls.controller-compiled.js"></script>-->
+<script src="components/controls/controls.controller-compiled.js"></script>
 </body>
 </html>

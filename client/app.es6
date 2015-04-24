@@ -1,6 +1,20 @@
 /** @author jeffwesson <jeffwesson.github.io> **/
 
 (function () {
-  angular.module('newsie', ['firebase', 'ngMessages'])
-    .constant('FIREBASE_URI', 'https://newsie-app.firebaseio.com');
+  angular.module('newsie', ['ngNewRouter', 'ngMessages', 'firebase'])
+    .constant('FIREBASE_URI', 'https://newsie-app.firebaseio.com')
+    .controller('AppController', ['$router', AppController]);
+
+  AppController.$routeConfig = [
+    {path: '/', redirectTo: '/main'},
+    {path: '/main', components: {top: 'controls', bottom: 'feed'}}
+  ];
+
+  function AppController($router) {
+    var app = this;
+
+    app.getFullYear = function () {
+      return new Date().getFullYear();
+    };
+  }
 })();

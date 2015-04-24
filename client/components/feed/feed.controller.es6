@@ -4,38 +4,38 @@
   angular.module('newsie').controller('FeedController', FeedController);
 
   // Dependency injection
-  FeedController.$inject = ['AccountsService', 'EventsService'];
+  FeedController.$inject = ['accountsService', 'eventsService'];
 
-  function FeedController(AccountsService, EventsService) {
+  function FeedController(accountsService, eventsService) {
     var feed = this;
 
-    feed.users = AccountsService.accounts;
-    feed.newsItems = EventsService.events;
+    feed.users = accountsService.accounts;
+    feed.newsItems = eventsService.events;
 
     feed.newUser = null;
-    feed.users.currentSearchTerm = '';
-    feed.newsItems.currentSearchTerm = '';
 
     // Users CRUD methods
     feed.addUser = function (userObject) {
 
-      // Generate timestamp for hashing
-      userObject.id = new Date().getTime();
+      if (1) {
+        // Generate timestamp for hashing
+        userObject.id = new Date().getTime();
 
-      AccountsService.addAccount(userObject);
-      feed.newUser = {};
+        accountsService.addAccount(userObject);
+        feed.newUser = {};
+      }
     };
 
     feed.getUser = function (userId) {
-      AccountsService.readAccount(userId);
+      accountsService.readAccount(userId);
     };
 
     feed.saveUser = function (userId) {
-      AccountsService.updateAccount(userId);
+      accountsService.updateAccount(userId);
     };
 
     feed.deleteUser = function (userId) {
-      AccountsService.deleteAccount(userId);
+      accountsService.deleteAccount(userId);
     };
 
     // NewsItems CRUD methods
@@ -44,20 +44,20 @@
       // Generate timestamp for hashing
       eventObject.time = eventObject.id = new Date().getTime();
 
-      EventsService.addEvent(eventObject);
+      eventsService.addEvent(eventObject);
       feed.newNewsItem = {};
     };
 
     feed.getNewsItem = function (eventId) {
-      EventsService.readEvent(eventId);
+      eventsService.readEvent(eventId);
     };
 
     feed.saveNewsItem = function (eventId) {
-      EventsService.updateEvent(eventId);
+      eventsService.updateEvent(eventId);
     };
 
     feed.deleteNewsItem = function (eventId) {
-      EventsService.deleteEvent(eventId);
+      eventsService.deleteEvent(eventId);
     };
 
 
@@ -65,7 +65,7 @@
     // Using static JSON
     //
     //feed.getUsers = function () {
-    //  return AccountsService.getAccounts().then(function (data) {
+    //  return accountsService.getAccounts().then(function (data) {
     //    feed.users = data || [];
     //    return feed.users;
     //  })

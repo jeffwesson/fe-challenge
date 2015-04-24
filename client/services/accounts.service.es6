@@ -1,11 +1,11 @@
 /** @author jeffwesson <jeffwesson.github.io> **/
 
 (function () {
-  angular.module('newsie').service('AccountsService', AccountsService);
+  angular.module('newsie').service('accountsService', accountsService);
 
-  AccountsService.$inject = ['$firebaseArray', 'FIREBASE_URI'];
+  accountsService.$inject = ['$firebaseArray', 'FIREBASE_URI'];
 
-  function AccountsService($firebaseArray, FIREBASE_URI) {
+  function accountsService($firebaseArray, FIREBASE_URI) {
 
     var rootRef = new Firebase(FIREBASE_URI);
     var ref = rootRef.child('accounts');

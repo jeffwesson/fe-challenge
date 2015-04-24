@@ -6,15 +6,13 @@
   angular.module('newsie').controller('ControlsController', ControlsController);
 
   // Dependency injection
-  ControlsController.$inject = ['AccountsService', 'EventsService'];
+  ControlsController.$inject = ['accountsService', 'eventsService'];
 
-  function ControlsController(AccountsService, EventsService) {
+  function ControlsController(accountsService, eventsService) {
     var controls = this;
 
-    controls.usersObject = AccountsService.accounts;
-    controls.newsItemsObject = EventsService.events;
-
-    controls.currentSearchTerm = '';
+    controls.usersObject = accountsService.accounts;
+    controls.newsItemsObject = eventsService.events;
 
     controls.sort = function () {};
   }

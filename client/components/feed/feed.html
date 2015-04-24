@@ -1,5 +1,72 @@
-<div ng-controller="FeedController as feed">
-  <div ng-repeat="index, user in feed.users">
-    <span>{{index}} - {{user.firstName}} {{user.lastName}}</span>
+<div class="row" ng-controller="FeedController as feed">
+  <div class="col-xs-12 col-md-6">
+    <form name="newUserForm" ng-submit="feed.addUser(feed.newUser)" novalidate>
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="First name"
+            ng-model="feed.newUser.firstName" name="firstName" required/>
+        <div ng-messages="newUserForm.firstName.$error" role="alert">
+          <div ng-message="required" class="form-error pull-right">This field is required.</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Last name"
+            ng-model="feed.newUser.lastName" name="lastName" required/>
+        <div ng-messages="newUserForm.lastName.$error" role="alert">
+          <div ng-message="required" class="form-error pull-right">This field is required.</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <button class="form-control btn btn-success" ng-disabled="newUserForm.$invalid">Add User</button>
+      </div>
+    </form>
+    <div class="users">
+      <div ng-repeat="(index, user) in feed.users | filter:app.users.currentSearchTerm">
+        <a ng-click="feed.deleteUser(user)" class="pull-right" href>
+          <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+        </a>
+
+        <div class="row">
+          <div class="col-xs-3 col-md-2">
+            <img ng-if="user.image" class="profile-thumbnail" ng-src="{{user.image}}" alt="profile image"/>
+            <i ng-if="!user.image" class="fa fa-user fa-3x fa-fw"></i>
+          </div>
+          <div class="col-xs-9 col-md-10">
+            <div class="form-group form-inline">
+              <input type="text" ng-blur="feed.saveUser(user)" ng-model="user.firstName"/>
+              <input type="text" ng-blur="feed.saveUser(user)" ng-model="user.lastName"/>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-6">
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="News item type"
+          ng-model="feed.newNewsItem.event.eventType">
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="News item snippet"
+          ng-model="feed.newNewsItem.event.snippet">
+    </div>
+    <div class="form-group">
+      <button class="form-control btn btn-success" ng-click="feed.addNewsItem(feed.newNewsItem)">Add News Item
+      </button>
+    </div>
+    <div class="news-items">
+      <div ng-repeat="(index, newsItem) in feed.newsItems | filter:app.newsItems.currentSearchTerm"
+          class="well feed-item">
+        <a ng-click="feed.deleteNewsItem(newsItem)" class="pull-right" href>
+          <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+        </a>
+          <span class="small">Posted <span ng-bind="newsItem.time | date"></span> at <span
+              ng-bind="newsItem.time | date:'mediumTime'"></span></span>
+
+        <p ng-bind="newsItem.event.eventType"></p>
+
+        <p ng-bind="newsItem.event.snippet"></p>
+      </div>
+    </div>
   </div>
 </div>

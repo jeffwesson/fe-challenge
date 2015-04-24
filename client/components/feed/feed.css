@@ -6,3 +6,10 @@ img.profile-thumbnail {
   border: none;
   box-shadow: none;
 }
+
+.form-error {
+  margin-top: -1.5em;
+  margin-right: 0.5em;
+  font-size: 0.9em;
+  color: red;
+}

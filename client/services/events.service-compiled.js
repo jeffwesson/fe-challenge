@@ -3,11 +3,11 @@
 'use strict';
 
 (function () {
-  angular.module('newsie').service('EventsService', EventsService);
+  angular.module('newsie').service('eventsService', eventsService);
 
-  EventsService.$inject = ['$firebaseArray', 'FIREBASE_URI'];
+  eventsService.$inject = ['$firebaseArray', 'FIREBASE_URI'];
 
-  function EventsService($firebaseArray, FIREBASE_URI) {
+  function eventsService($firebaseArray, FIREBASE_URI) {
 
     var rootRef = new Firebase(FIREBASE_URI);
     var ref = rootRef.child('events');
